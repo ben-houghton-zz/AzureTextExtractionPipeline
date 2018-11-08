@@ -87,7 +87,7 @@ Then select 'Webhook + API' followed by 'Create'
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop9.JPG" width="700">
 
-This operation will create a direcotry and the scaffolding for a .NET based HTTP triggered Function. 
+This operation will create a directory and the scaffolding for a .NET based HTTP triggered Function. 
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop11.JPG" width="700">
 
@@ -101,11 +101,21 @@ e.g.
 ```
 Click the 'Run' button a the right hand bottom of the page and a Request will be made to the URL of your function (you can see the URL by clicking '</> Get function URL' in the top middle of the screen). When the Function executes you'll see the execution Log in the middle bottom of the page, you'll see the output of the HTTP request 'Hello Ben' and the HTTP Status '200 OK' 
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctiontestscaffold.JPG" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createfunctiontestscaffold.JPG" width="700">
 
-## 6 Edit the Function App To Use AI For Detectiing and Extracting Text From Images
+## 6 Edit the Function App To Use AI For Detecting and Extracting Text From Images
 
-The Function parses the image URL and then POSTS it to the Cognitive Services Vision OCR API. If all is well, the API will return a JSON response containing th results of it's operation.
+The Function parses the image URL and then POSTS it to the Cognitive Services Vision OCR API. If all is well, the API will return a JSON response containing the results of it's operation.
+
+Earlier on you took a copy of the Cognitive Services Computer Vision authorisation key. We could embed this key in our code, but that's not very secure. We're going to secure the key in the Function application settings.
+
+Click on the name of the Function and then 'Overview' and 'Application Settings'.
+
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionappsettings.JPG" width="700">
+
+Navigate to the 'Application Settings' section and click '+ Add new setting'. Add a setting with a name of 'ComputerVisionSubscriptionKey' and copy in the key value you stored earlier.
+
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionappsettingsvalue.JPG" width="700">
 
 Replace the existing scaffold code with the code below. This code accepts a HTTP request that has a POST body containing an image URL. 
  
