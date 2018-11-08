@@ -217,7 +217,7 @@ public static string HttpPost(string URI, string body, ILogger log)
 
 ## 5 Test The Text Extraction Serverless Function
 
-In a similar way as before  we can use the Test panel to the right of the page to test the new code. Replace the request body with a the URL of an image with some text in it.
+In a similar way as before  we can use the Test panel to the right of the page to test the new code. Replace the request body with a the URL of an image with some text in it. You can use anything that is publically available on the internet.
 
 e.g. https://mediaforensicstoolkitstg.blob.core.windows.net/forensicsmedia/ceh.jpg
 
@@ -243,7 +243,9 @@ With Postman you can create an API  request and call the Function as an external
 
 Now we have implemented the text extraction via OCR, our next steps are to perform some text analytics on the text we have retrieved. 
 
-To implement this, follow this lab https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/keyphrasejsfunction.md
+To implement this, follow this lab - 
+
+https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/keyphrasejsfunction.md
 
 ## 6 Review Monitoring Output
 
