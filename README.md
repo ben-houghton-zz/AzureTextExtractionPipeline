@@ -29,7 +29,7 @@ When you are in this menu, if you select AI & Machine Learning then Computer Vis
 
  <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop3.JPG" width="700">
 
-Create the service with a unique to you name, use a Location of 'UK West', the 'F0' (Free pricing tier) and create a new [Resource Group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) called something like '[yourshortname]functionapp-rg'.
+Create the service with a unique to you name, use a Location of 'UK South', the 'F0' (Free pricing tier) and create a new [Resource Group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups) called something like '[yourshortname]functionapp-rg'.
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop4.JPG" width="700">
 
@@ -41,7 +41,7 @@ Once the creation process for both the Computer Vision and Text Analytics APIs h
 
 Follow a similar process to the last step, but this time create a Text Analytics API.
 
-Create the service with a unique to you name, use a Location of 'UK West', the 'F0' (Free pricing tier) and select the Resource Group you created earlier from the 'Resource Group' dropdown list. 
+Create the service with a unique to you name, use a Location of 'UK South', the 'F0' (Free pricing tier) and select the Resource Group you created earlier from the 'Resource Group' dropdown list. 
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop6.JPG" width="700">
 
@@ -105,7 +105,9 @@ Click the 'Run' button a the right hand bottom of the page and a Request will be
 
 ## 6 Edit the Function App To Use AI For Detectiing and Extracting Text From Images
 
-Replace the existing scaffold code with the code below 
+The Function parses the image URL and then POSTS it to the Cognitive Services Vision OCR API. If all is well, the API will return a JSON response containing th results of it's operation.
+
+Replace the existing scaffold code with the code below. This code accepts a HTTP request that has a POST body containing an image URL. 
  
 ```javascript
 
@@ -196,24 +198,40 @@ public static string HttpPost(string URI, string body, ILogger log)
 
 ```
 
-
-
 ## 5 Test The Text Extraction Serverless Function
 
+In a similar way as before  we can use the Test panel to the right of the page to test the new code. Replace the request body with a the URL of an image with some text in it.
 
-## 5 Create The Storage Queue Triggered Serverless Function To Perform Text Analysis 
-
-
-
-## 6 Test The Text Analysis Serverless Function
+e.g. https://mediaforensicstoolkitstg.blob.core.windows.net/forensicsmedia/ceh.jpg
 
 
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/testnetfunction.JPG" width="700">
 
-## 7 Create a Cosmos DB NoSQL Database to store the results
+You can see in the Output panel the analysis of the image and the text that was found in the image.
+
+If you want to test this Function in more of a real world scenario as an API you can use a tool such as [Postman](https://www.getpostman.com/) or CURL.
+
+With Postman you can create an API  request and call the Function as an external API. Retrieve the URL of your function (you can see the URL by clicking '</> Get function URL' in the top middle of the screen) and use Postman to make a request with the same request body you used in the Test panel. Make sure you set the Content Type to application/json
+
+```javascript
+{
+    "imageUrl": "https://mediaforensicstoolkitstg.blob.core.windows.net/forensicsmedia/ceh.jpg"
+}
+  
+```
+
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/postmantestnet.JPG" width="700">
 
 
+## Review Monitoring Output
 
-## 8 Store The Results From the PipeLine in the NoSQL DB
+With any an app, it is important to continually monitor performance and availability. When we created the Function App we selected 'Application Insights' too. This provisioned a monitoring environment where we can review performance and set up alerting for metrics like availabilty.
+
+If you look in the Resource Group you created, you'll see the Application Insights resource. Click on this an it will open the Application Insights control panel 
+
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/applicationinsights" width="700">
+
+
 
 
 ## 10 Clean Up Resources
