@@ -70,7 +70,7 @@ Next we will create the Serverless Function App that will execute the image proc
 
 Enter the configuration parameters use a name something like '[yourshortname]functionapp', select the Resource Group you created earlier from the drop-down list, choose the OS as Windows, Hosting Plan as 'Consumption', location as UK South, Runtime Stack as '.NET', and select the existing storage account you created in the last step. Select [Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview) as 'On' with a location of 'North Europe'
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/creatnetfunction.JPG" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createnetfunctionapp.JPG" width="700">
 
 ## 5 Build the HTTP Request Triggered Serverless Function 
 
