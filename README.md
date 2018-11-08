@@ -1,4 +1,4 @@
-# AzureTextExtractionPipeline
+# Azure Text Extraction Pipeline
 This repo walks developer through the building a Text from Image ExtractionPipeline using Azure Cognitive Services and Serverless Functions
 
 
@@ -117,7 +117,7 @@ Navigate to the 'Application Settings' section and click '+ Add new setting'. Ad
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionappsettingsvalue.JPG" width="700">
 
-You'll see in the code the line below. The imports the setting into the code at runtime, meaning the ket is safely secured outside of the source code.
+You'll see in the code the line below. The imports the setting into the code at runtime, meaning the key is safely secured outside of the source code.
 
 ```javascript
 var subscriptionKey = System.Environment.GetEnvironmentVariable("ComputerVisionSubscriptionKey", EnvironmentVariableTarget.Process);
@@ -239,15 +239,19 @@ With Postman you can create an API  request and call the Function as an external
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/postmantestnet.JPG" width="700">
 
+## 6 Implement Text Analytics (Key Word Extraction and Sentiment Analsis) - OPTIONAL
 
-## Review Monitoring Output
+Now we have implemented the text extraction via OCR, our next steps are to perform some text analytics on the text we have retrieved. 
+
+To implement this, follow this lab https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/keyphrasejsfunction.md
+
+## 6 Review Monitoring Output
 
 With any an app, it is important to continually monitor performance and availability. When we created the Function App we selected 'Application Insights' too. This provisioned a monitoring environment where we can review performance and set up alerting for metrics like availabilty.
 
 If you look in the Resource Group you created, you'll see the Application Insights resource. Click on this an it will open the Application Insights control panel 
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/applicationinsights" width="700">
-
 
 
 

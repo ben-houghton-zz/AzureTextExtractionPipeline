@@ -25,10 +25,11 @@ Then select 'Webhook + API' followed by 'Create'
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctionwebhookandapi.JPG" width="700">
 
-This operation will create a direcotry and the scaffolding for a Node.JS based HTTP triggered Function. 
+This operation will create a diretory and the scaffolding for a Node.JS based HTTP triggered Function. 
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctionscaffolding.JPG" width="700">
 
+(If you've done this in a previous lab, you can skill this next bit...)
 Let's do a quick test to check that this scaffold works as expected. Click on 'Test' at the right hand edge of the page. You'll see a test console where you can change the HTTP request type, add and remove query parameters, headers and request body. Edit the request body and replace "name":"Azure" with "name" : "[Your name]".
 
 e.g. 
@@ -61,6 +62,9 @@ Once into the Kudu menu, click 'Debug Console' at the top, then select 'CMD'. In
 ```
 You may see a few message in red, ignore these, the Node.JS modules will still be available to our Function.
 
+Set up an AppSetting like you did in the previous lab for the Text Analytics API key. Retrieve the API key for the Cognitive Services Text Analytics API and create a AppSetting called 'TextAnalyticsSubscriptionKey' where you can store the key as the AppSetting value.
+
+Next we need to edit the Function scaffold code to perform key word extraction. You can copy and paste the code below.
 
 
 ```javascript
@@ -72,21 +76,21 @@ module.exports = function (context, req) {
     context.log('Node.js HTTP trigger function processed a request. RequestUri=%s', req.originalUrl);
 
     // Make a call out to Cognitive Services
-    if (req.query.text)
+    if (req.body.text)
     {
 
         request.post({
             url: 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyphrases?',
             headers: {
                 "Content-Type": "application/json",
-                "Ocp-Apim-Subscription-Key": "[Cogntive Services Key]"
+                "Ocp-Apim-Subscription-Key": process.env.TextAnalyticsSubscriptionKey
             },
             json: {
                 "documents": [
                   {
                       "language": "en",
                       "id": "id1",
-                      "text": req.query.text
+                      "text": req.body.text
                   }
                 ]
             }
@@ -110,7 +114,7 @@ module.exports = function (context, req) {
 
             context.res = {
                 // status: 200, /* Defaults to 200 */
-                // Send back the score we got from the Cog API
+                // Send back the result from the Cog API
                     body
             };
             context.done();
@@ -120,7 +124,7 @@ module.exports = function (context, req) {
         // Bad request - Missing property on body
         context.res = {
             status: 400,
-            body: "Expected 'text' property on query string"
+            body: "Expected 'text' property in request body"
         };
         context.done();
     }
