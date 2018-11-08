@@ -253,7 +253,7 @@ With any an app, it is important to continually monitor performance and availabi
 
 If you look in the Resource Group you created, you'll see the Application Insights resource. Click on this an it will open the Application Insights control panel 
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/applicationinsights.jpg" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/applicationinsights.JPG" width="700">
 
 
 
