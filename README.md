@@ -62,15 +62,15 @@ Create your storage account using the Resource Group that you created earlier (s
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createstorageaccountparams.JPG" width="700">
 
 
-## 4 Create The Function App
+## 4 Create The .NET Framework Function App
 
 Next we will create the Serverless Function App that will execute the image processing. Select the 'Create a Resource' button and this time select 'Compute' then 'Function App'.
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop1.JPG" width="700">
 
-Enter the configuration parameters use a name something like '[yourshortname]functionapp', select the Resource Group you created earlier from the drop-down list, choose the OS as Windows, Hosting Plan as 'Consumption', location as UK South, Runtime Stack as 'JavaScript', and select the existing storage account you created in the last step. Select [Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview) as 'On' with a location of 'North Europe'
+Enter the configuration parameters use a name something like '[yourshortname]functionapp', select the Resource Group you created earlier from the drop-down list, choose the OS as Windows, Hosting Plan as 'Consumption', location as UK South, Runtime Stack as '.NET', and select the existing storage account you created in the last step. Select [Application Insights](https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview) as 'On' with a location of 'North Europe'
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop2.JPG" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/creatnetfunction.JPG" width="700">
 
 ## 5 Build the HTTP Request Triggered Serverless Function 
 
@@ -81,15 +81,15 @@ Now we've create the Serverless Function App, we can create the individual Funct
 
 Select 'In-Portal Development' and 'Continue'
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctionportal.JPG" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop8.JPG" width="700">
 
 Then select 'Webhook + API' followed by 'Create'
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctionwebhookandapi.JPG" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop9.JPG" width="700">
 
-This operation will create a direcotry and the scaffolding for a Node.JS based HTTP triggered Function. 
+This operation will create a direcotry and the scaffolding for a .NET based HTTP triggered Function. 
 
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctionscaffolding.JPG" width="700">
+<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionworkshop11.JPG" width="700">
 
 Let's do a quick test to check that this scaffold works as expected. Click on 'Test' at the right hand edge of the page. You'll see a test console where you can change the HTTP request type, add and remove query parameters, headers and request body. Edit the request body and replace "name":"Azure" with "name" : "[Your name]".
 
@@ -103,28 +103,98 @@ Click the 'Run' button a the right hand bottom of the page and a Request will be
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctiontestscaffold.JPG" width="700">
 
-## 6 Edit the Function App To Use AI For Detectiing and Extracting Text From Images 
+## 6 Edit the Function App To Use AI For Detectiing and Extracting Text From Images
+
+Replace the existing scaffold code with the code below 
  
-As we start to build out our Node.JS code, we need to import some Node packages to enable us to make HTTP requests to the Cognitive Services APIs. To do this we need to access the Kudu interface where we can make the NPM commands. Click on the name of your Function to reveal the Configuration menu. 
-
-createjsfunctionsettings.jpg
-
-Then click on 'Platform Features' then 'Console (CMD/PowerShell)'
-
-<img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createjsfunctionconsole.JPG" width="700">
-
-
-Once into the Kudu menu, click 'Debug Console' at the top, then select 'CMD'. In the CMD screen enter
-
 ```javascript
+
+#r "Newtonsoft.Json"
+
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using System;
+using System.Web;
+using System.Text;
+using System.Configuration;
+
+public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
 {
-    npm install request
+    log.LogInformation("C# HTTP trigger function processed a request.");
+
+    string imageUrl = req.Query["imageUrl"];
+
+    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    dynamic data = JsonConvert.DeserializeObject(requestBody);
+    imageUrl = imageUrl ?? data?.imageUrl;
+
+    //Return the Cognitive Services output
+    var apiOutput = AnalyseImage(imageUrl, log);
+
+    return imageUrl != null
+        ? (ActionResult)new OkObjectResult(apiOutput)
+        : new BadRequestObjectResult("There was an error: "+data);
 }
+
+
+/// <summary>
+/// Make a POST request to the ComputerVision API send the URL to the image in the blob container
+/// </summary>
+/// <param name="blobUrl"></param>
+/// <param name="log"></param>
+/// <returns></returns>
+private static string AnalyseImage(string imageUrl, ILogger log)
+{
+    var requestBody = "{\"url\":\"" + imageUrl + "\"}";
+
+    log.LogInformation($"Request body: {requestBody}");
+
+    var queryString = "language=unk&detectOrientation=true";
+
+    var uri = "https://uksouth.api.cognitive.microsoft.com/vision/v1.0/ocr?" + queryString;
+
+    log.LogInformation($"Calling Uri: {uri}");
+
+    string response = HttpPost(uri, requestBody, log);
+
+    return response;
+}
+
+
+/// <summary>
+/// Make a simple HTTP Post
+/// </summary>
+/// <param name="URI"></param>
+/// <param name="body"></param>
+/// <param name="log"></param>
+/// <returns></returns>
+public static string HttpPost(string URI, string body, ILogger log)
+{
+
+    var subscriptionKey = System.Environment.GetEnvironmentVariable("ComputerVisionSubscriptionKey", EnvironmentVariableTarget.Process);
+
+    System.Net.WebRequest req = System.Net.WebRequest.Create(URI);
+    req.Method = "POST";
+    req.Headers.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+    byte[] bytes = System.Text.Encoding.ASCII.GetBytes(body);
+
+    log.LogInformation($"Posting data");
+
+    req.ContentLength = bytes.Length;
+    System.IO.Stream os = req.GetRequestStream();
+    os.Write(bytes, 0, bytes.Length);
+    os.Close();
+    System.Net.WebResponse resp = req.GetResponse();
+    if (resp == null) return null;
+    System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
+    return sr.ReadToEnd().Trim();
+}
+
+
+
 ```
-You may see a few message in red, ignore these, the Node.JS modules will still be available to our Function.
-
-
-
 
 
 
