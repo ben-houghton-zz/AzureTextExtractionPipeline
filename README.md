@@ -113,9 +113,16 @@ Click on the name of the Function and then 'Overview' and 'Application Settings'
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionappsettings.JPG" width="700">
 
-Navigate to the 'Application Settings' section and click '+ Add new setting'. Add a setting with a name of 'ComputerVisionSubscriptionKey' and copy in the key value you stored earlier.
+Navigate to the 'Application Settings' section and click '+ Add new setting'. Add a setting with a name of 'ComputerVisionSubscriptionKey' and copy in the key value you stored earlier. Next click 'Save' at the top of the screen.
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/functionappsettingsvalue.JPG" width="700">
+
+You'll see in the code the line below. The imports the setting into the code at runtime, meaning the ket is safely secured outside of the source code.
+
+```javascript
+var subscriptionKey = System.Environment.GetEnvironmentVariable("ComputerVisionSubscriptionKey", EnvironmentVariableTarget.Process);
+```
+
 
 Replace the existing scaffold code with the code below. This code accepts a HTTP request that has a POST body containing an image URL. 
  
