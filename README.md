@@ -13,15 +13,11 @@ and describing an image with complete English sentences. Additionally, it can al
 ## What you'll need
 
 - An [Azure Subscription](https://azure.microsoft.com/en-gb/free/?&WT.srch=1&WT.mc_ID=SEM_Bing_UKAzureBG_)
-- An [Azure Function App](https://docs.microsoft.com/en-us/azure/azure-functions/functions-overview)
-- An [Azure DocumentDB](https://azure.microsoft.com/en-us/services/documentdb/) instance
-- An [Azure Storage Account](https://azure.microsoft.com/en-gb/services/storage/)
 
-## How it works
 
 ## 1 Provision the Cognitive Services Computer Vision API
 
-We need to provision the Cogntive Services Computer Vision API with with which we can analyse the images. If you click on the 'Create a Resource' button in the top left corner of the Azure Portal. It will open the Azure Marketplace blade where you can start to provision Azure resources and services.
+We need to provision the Cognitive Services Computer Vision API with with which we can analyse the images. If you click on the 'Create a Resource' button in the top left corner of the Azure Portal. It will open the Azure Marketplace blade where you can start to provision Azure resources and services.
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/createaresource.JPG" width="700">
 
@@ -249,7 +245,19 @@ https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/keyphras
 
 Once you've done this, we will need to edit the code of the Text Extraction Function to parse the text from the Computer Vision OCR API and submit it to the Key Phrase Function. We can then return the text extracted from the image and also the idenitifed key words in the HTTP response.
 
-## 6 Review Monitoring Output
+For extra points, you can try and do this yourself or use some help from here - 
+
+https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/parseocrresults.md
+
+Next steps are to submit the parsed text to the Keyword Function and return all the results to the user.
+
+Again, you can try and do this yourself or use some help from here 
+
+https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/integratekeywordfunction.md
+
+
+
+## 7 Review Monitoring Output
 
 With any an app, it is important to continually monitor performance and availability. When we created the Function App we selected 'Application Insights' too. This provisioned a monitoring environment where we can review performance and set up alerting for metrics like availabilty.
 
@@ -258,7 +266,7 @@ If you look in the Resource Group you created, you'll see the Application Insigh
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/applicationinsights.JPG" width="700">
 
 
-## 10 Clean Up Resources
+## 8 Clean Up Resources
 
 Some of the benefits of cloud computing is the ability to create and destroy resources in an automated fashion as an when you need them. This gives you the ability to innovate rapidly but also keep costs low. It's important that to keep costs low we delete resources once we've finised with them, so now we've finished the lab let's destroy the resources we've used.
 
