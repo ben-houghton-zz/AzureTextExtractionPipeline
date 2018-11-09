@@ -243,18 +243,19 @@ With Postman you can create an API  request and call the Function as an external
 
 Now we have implemented the text extraction via OCR, our next steps are to perform some text analytics on the text we have retrieved. 
 
-To implement this, follow this lab - 
+Key phrase extracrtion is valuable as it allows for the summary of documents into a few words so we cam more easily understand the context. To implement this, follow this lab to create a HTTP Trigger Azure Function that will perform key phrase extraction - 
 
 https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/keyphrasejsfunction.md
+
+Once you've done this, we will need to edit the code of the Text Extraction Function to parse the text from the Computer Vision OCR API and submit it to the Key Phrase Function. We can then return the text extracted from the image and also the idenitifed key words in the HTTP response.
 
 ## 6 Review Monitoring Output
 
 With any an app, it is important to continually monitor performance and availability. When we created the Function App we selected 'Application Insights' too. This provisioned a monitoring environment where we can review performance and set up alerting for metrics like availabilty.
 
-If you look in the Resource Group you created, you'll see the Application Insights resource. Click on this an it will open the Application Insights control panel 
+If you look in the Resource Group you created, you'll see the Application Insights resource (The purple lightbulb). Click on this an it will open the Application Insights control panel 
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/applicationinsights.JPG" width="700">
-
 
 
 ## 10 Clean Up Resources
@@ -264,22 +265,6 @@ Some of the benefits of cloud computing is the ability to create and destroy res
 We could delete all the items one by one if needed, but the quickest and easiest way is to delete the whole [Resource Group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview#resource-groups). You can do this by navigating to the resource group you created in the Resource Group Explorer in the left-hand side menu,selecting the resource group, then clicking on the button at the top 'Delete Resource Group'. You'll be asked to confirm your delete action and to enter the resource group name as a secondary confirmation. Once you've done this and accepted, the Resource Group and the items within it will be deleted.
 
 <img src="https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/images/deleteresourcegroup.JPG " width="700">
-
-
-To make this demo work, you need to clone or download this repository, then - 
-
-### Edit the Appsettings parameters with your own values
-
-```javascript
-{
-  
-```
-
-### Upload the Functions code to you Azure Function App Environment
-- You can do this in Visual Studio by right clicking on the project name and selecting 'Deploy'.
-- You can use [Continuous Integration](https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment)
-- Cut and paste this code into [a Function you created in the Azure Portal](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-azure-function-azure-portal)
-
 
 
 ## Learn more about developing [Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference)
