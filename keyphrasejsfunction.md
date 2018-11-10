@@ -1,4 +1,7 @@
 
+# Azure Text Extraction Pipeline - Create a Node.js Keyword Analysis Function
+
+This repo walks a developer through parsing the text out of the JSON response returned by the Azure Computer Vision Optical Character Recognition API.
 
 ## 1 Create The JavaScript Function App
 
@@ -68,10 +71,8 @@ Next we need to edit the Function scaffold code to perform key word extraction. 
 
 
 ```javascript
-
 var request = require('request');
 
-　
 module.exports = function (context, req) {
     context.log('Node.js HTTP trigger function processed a request. RequestUri=%s', req.originalUrl);
 
@@ -80,7 +81,7 @@ module.exports = function (context, req) {
     {
 
         request.post({
-            url: 'https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyphrases?',
+            url: 'https://uksouth.api.cognitive.microsoft.com/text/analytics/v2.0/keyphrases?',
             headers: {
                 "Content-Type": "application/json",
                 "Ocp-Apim-Subscription-Key": process.env.TextAnalyticsSubscriptionKey

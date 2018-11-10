@@ -239,7 +239,7 @@ With Postman you can create an API  request and call the Function as an external
 
 Now we have implemented the text extraction via OCR, our next steps are to perform some text analytics on the text we have retrieved. 
 
-Key phrase extracrtion is valuable as it allows for the summary of documents into a few words so we cam more easily understand the context. To implement this, follow this lab to create a HTTP Trigger Azure Function that will perform key phrase extraction - 
+Key phrase extraction is valuable as it allows for the summary of documents into a few words so we cam more easily understand the context. To implement this, follow this lab to create a HTTP Trigger Azure Function that will perform key phrase extraction - 
 
 https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/keyphrasejsfunction.md
 
@@ -251,7 +251,7 @@ https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/parseocr
 
 Next steps are to submit the parsed text to the Keyword Function and return all the results to the user.
 
-Again, you can try and do this yourself or use some help from here 
+Again, you can try and do this yourself or use some help from here -
 
 https://github.com/ben-houghton/AzureTextExtractionPipeline/blob/master/integratekeywordfunction.md
 
